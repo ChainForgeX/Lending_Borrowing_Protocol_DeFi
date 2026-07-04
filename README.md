@@ -11,6 +11,7 @@
 <br/>
 
 ![Network](https://img.shields.io/badge/Network-Sepolia_Testnet-blue?style=flat)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=flat)
 ![Tests](https://img.shields.io/badge/Tests-Mocha_%26_Chai-8D6748?style=flat)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat)
 
@@ -25,6 +26,8 @@
 ## 📑 Table of Contents
 
 - [Overview](#-overview)
+- [Project Status](#-project-status)
+- [Live Deployment](#-live-deployment-sepolia)
 - [Protocol Mechanics](#-protocol-mechanics)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -35,6 +38,8 @@
 - [Getting Started](#-getting-started)
 - [Testing](#-testing)
 - [Deployment](#-deployment)
+- [Screenshots](#-screenshots)
+- [What I Learned](#-what-i-learned)
 - [Future Improvements](#-future-improvements)
 - [Author](#-author)
 
@@ -47,6 +52,27 @@
 The protocol integrates **Chainlink ETH/USD Price Feeds** for real-time collateral valuation, implements a **health factor system** to protect solvency, and includes a **liquidation engine** that allows external actors to close undercollateralized positions for a bonus reward.
 
 This is not a tutorial project — it models the core mechanics of production DeFi protocols like **Aave** and **Compound**, implemented from first principles with custom CEI patterns, a dynamic interest rate model, and a Mock Oracle for isolated unit testing.
+
+---
+
+## 🚧 Project Status
+
+✅ **Completed**
+
+Fully implemented, unit tested, deployed, and interacted with on the **Ethereum Sepolia Testnet**.
+
+---
+
+## 🌐 Live Deployment (Sepolia)
+
+| Contract | Address |
+|---|---|
+| **LoanToken** | `0xE03f8f9c81Db5c4Bc451433824bDf01ea1e8F85f` |
+| **PriceOracle** | `0x9EffeBB9265b03ee4eaf6fE3ad89353e1B758e6D` |
+| **InterestRateModel** | `0x4658c6f14127Cca00FE4d3C0C745954971B9D9aE` |
+| **LendingProtocol** | `0x8722EF1283E3666bf59c394d4f39C44657a456F4` |
+
+**Network:** Ethereum Sepolia Testnet
 
 ---
 
@@ -73,7 +99,7 @@ Health Factor = (Collateral Value × Liquidation Threshold) / Total Debt
 | `< 1.0` | ❌ Liquidatable |
 
 ### Dynamic Interest Rate
-Interest accrues continuously based on time elapsed since last interaction. The **InterestRateModel** contract computes the rate based on protocol utilization.
+Interest accrues continuously based on time elapsed since last interaction.
 
 ```
 Accrued Interest = Principal × Rate × (Δt / secondsPerYear)
@@ -236,7 +262,7 @@ PRIVATE_KEY=your_wallet_private_key
 ETHERSCAN_API_KEY=your_etherscan_api_key
 ```
 
-### Compile Contracts
+### Compile
 
 ```bash
 npx hardhat compile
@@ -254,13 +280,16 @@ npx hardhat test
 
 Tests cover:
 
-- Deposit and collateral accounting
-- Borrow within and beyond LTV limits
+- LoanToken deployment and minting
+- Protocol funding
+- ETH deposits and collateral accounting
+- Borrowing within and beyond LTV limits
 - Health factor calculation across price movements
-- Interest accrual over time
+- Time-based interest accrual
 - Full repayment and collateral withdrawal
 - Liquidation of undercollateralized positions
 - Liquidation bonus distribution
+- Mock Price Oracle integration
 
 ---
 
@@ -280,17 +309,57 @@ npx hardhat run scripts/interact.ts --network sepolia
 
 ---
 
+## 📸 Screenshots
+
+### Protocol Interaction — Sepolia Testnet
+
+The interaction script runs against the live deployed contracts on Sepolia. Chainlink returns a live ETH price of **$1755.174**. The script deposits **0.03 ETH** as collateral, borrows **5.0 LT**, approves the protocol, and successfully repays — all in a single run.
+
+![Interaction Script Output](assets/interaction.png)
+
+---
+
+### Final State
+
+After the full interaction cycle — deposit, borrow, repay — the protocol reflects the final position with a healthy factor of **7.8946**, confirming the position is well-collateralized after partial interest accrual on the borrowed amount.
+
+![Final State](assets/final-state.png)
+
+---
+
+## 📚 What I Learned
+
+- Solidity Smart Contract Development
+- ERC20 Token Standards and custom minting/burning
+- Chainlink Price Feed integration
+- DeFi Lending Protocol Design (Aave/Compound mechanics)
+- Loan-to-Value and Health Factor implementations
+- Liquidation engine and bonus incentive design
+- Dynamic Interest Rate Models
+- Hardhat Testing with Mock Oracles
+- Hardhat Ignition deployment modules
+- Ethereum Sepolia Testnet deployment and interaction
+- Smart Contract Security — CEI patterns, custom errors, access control
+
+---
+
 ## 🔮 Future Improvements
 
-- [ ] Multi-Collateral Assets (WBTC, stablecoins)
+- [ ] Multi-Collateral Asset Support (WBTC, stablecoins)
 - [ ] Flash Loans
-- [ ] Governance Token & DAO Voting
 - [ ] Stablecoin Borrowing
-- [ ] Supply-Side Interest (lenders earn yield)
+- [ ] Governance Token & DAO Voting
+- [ ] Supply-Side Interest Rewards (lenders earn yield)
 - [ ] Aave-style Interest Index (`liquidityIndex`)
 - [ ] Compound-style Utilization Curve (kink model)
 - [ ] Frontend Dashboard (React + Ethers.js)
 - [ ] Formal Verification (Certora / Echidna)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
 
 ---
 
@@ -300,7 +369,7 @@ npx hardhat run scripts/interact.ts --network sepolia
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-000?style=flat&logo=vercel&logoColor=white)](https://jeevan-yadav.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Jeevan9898-181717?style=flat&logo=github)](https://github.com/Jeevan9898)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Jeevan_Yadav-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/jeevan-yadav-b664952b5)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Jeevan_Yadav-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jeevan-yadav-b664952b5)
 
 ---
 
